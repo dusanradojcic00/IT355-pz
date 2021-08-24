@@ -1,5 +1,6 @@
 package com.met.it355pz.service.impl;
 
+import com.met.it355pz.exception.NoSuchFoundElementException;
 import com.met.it355pz.model.Role;
 import com.met.it355pz.model.RoleType;
 import com.met.it355pz.model.User;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean giveAdmin(String username) {
-        User user = userRepo.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found"));
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new NoSuchFoundElementException("User with username " + username + " not found"));
 
         user.addRole(roleRepo.findByName(RoleType.ROLE_ADMIN));
 
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean takeAdmin(String username) {
-        User user = userRepo.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found"));
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new NoSuchFoundElementException("User with username " + username + " not found"));
 
         Role adminRole = roleRepo.findByName(RoleType.ROLE_ADMIN);
 
@@ -61,12 +62,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(long id, UserPrincipal currentUser) {
-        User user = userRepo.findByUsername(currentUser.getUsername()).orElse(new User());
+        User user = userRepo.findById(id).orElseThrow(() -> new NoSuchFoundElementException("Entitiy with ID: " + id + " not found"));
 
-        if (user.getId().equals(currentUser.getId()) ||
-                currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name()))) {
+        if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name()))) {
             return userRepo.getById(id);
+        } else if (user.getId().equals(currentUser.getId())) {
+            return userRepo.getById(id);
+        } else {
+            throw new SecurityException("You don't have permission");
         }
-        throw new EntityNotFoundException("Entitiy with ID: " + id + " not found");
+
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepo.delete(user);
     }
 }

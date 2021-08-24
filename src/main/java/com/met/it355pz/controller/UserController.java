@@ -54,4 +54,11 @@ public class UserController {
         map.put("id", id);
         return ResponseEntity.ok(map);
     }
+
+    @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteUser(@RequestBody User user) {
+        userService.deleteUser(user);
+        return ResponseEntity.ok("User with username " + user.getUsername() + " successfully deleted");
+    }
 }

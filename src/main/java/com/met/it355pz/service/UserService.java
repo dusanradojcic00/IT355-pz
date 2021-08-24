@@ -12,4 +12,5 @@ public interface UserService {
 
     public User getUserById(long id, UserPrincipal currentUser);
 
+    void deleteUser(User user);
 }
