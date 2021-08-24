@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class NoSuchFoundElementException extends RuntimeException {
 
-    public NoSuchFoundElementException(String message) {
-        super(message);
+    public NoSuchFoundElementException(String element) {
+        super("Entity not found: " + element);
+    }
+
+    public NoSuchFoundElementException(Long id) {
+        super("Entitiy with ID: " + id + " not found");
     }
 }

@@ -1,5 +1,6 @@
 package com.met.it355pz.service.impl;
 
+import com.met.it355pz.exception.NoSuchFoundElementException;
 import com.met.it355pz.model.Car;
 import com.met.it355pz.repo.CarRepo;
 import com.met.it355pz.service.CarService;
@@ -25,7 +26,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car getCarById(long id) {
-        return carRepo.findById(id).orElse(null);
+        return carRepo.findById(id).orElseThrow(() -> new NoSuchFoundElementException(id));
     }
 
     @Override
