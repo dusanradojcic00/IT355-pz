@@ -13,5 +13,5 @@ public interface CarService {
 
     public long saveCar(Car car);
 
-    public void updateCar(Car car);
+    public Car updateCar(Car car);
 }

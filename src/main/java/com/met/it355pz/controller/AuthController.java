@@ -75,4 +75,6 @@ public class AuthController {
 
         return ResponseEntity.ok(new ApiResponse(true, "Uspesno ste kreirali nalog!"));
     }
+
+
 }

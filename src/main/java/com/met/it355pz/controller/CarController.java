@@ -22,7 +22,6 @@ public class CarController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(carService.getAllCars());
     }
@@ -42,16 +41,18 @@ public class CarController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
-        return ResponseEntity.ok("deleted");
+        return ResponseEntity.ok("Deleted car with ID: " + id);
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCar(@RequestBody Car car) {
-        return null;
+        carService.updateCar(car);
+        return ResponseEntity.ok("Car with ID: " + car.getId() + " successfully updated");
     }
+
 
 }

@@ -39,7 +39,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void updateCar(Car car) {
-
+    public Car updateCar(Car car) {
+        return carRepo.save(car);
     }
 }
