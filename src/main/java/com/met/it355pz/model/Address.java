@@ -1,5 +1,6 @@
 package com.met.it355pz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,8 +22,5 @@ public class Address {
     private String city;
 
     private String zipcode;
-
-    @OneToOne
-    private User user;
 
 }
