@@ -61,4 +61,11 @@ public class UserController {
         userService.deleteUser(user);
         return ResponseEntity.ok("User with username " + user.getUsername() + " successfully deleted");
     }
+
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @CurrentUser UserPrincipal userPrincipal) {
+        userService.updateUser(user, userPrincipal);
+        return ResponseEntity.ok("User with username " + user.getUsername() + " successfully updated");
+    }
 }

@@ -8,6 +8,7 @@ import com.met.it355pz.payload.auth.AuthRequest;
 import com.met.it355pz.payload.auth.AuthResponse;
 import com.met.it355pz.repo.RoleRepo;
 import com.met.it355pz.repo.UserRepo;
+import com.met.it355pz.service.UserService;
 import com.met.it355pz.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +39,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RoleRepo roleRepo;
-
-    @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
@@ -57,22 +55,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest authRequest) {
-
         User user = new User(authRequest.getUsername(), passwordEncoder.encode(authRequest.getPassword()));
-
-        List<Role> roles = new ArrayList<>();
-
-        roles.add(roleRepo.findByName(RoleType.ROLE_USER));
-
-        //Prvi user je i admin
-        if (userRepo.count() < 1){
-            roles.add(roleRepo.findByName(RoleType.ROLE_ADMIN));
-        }
-
-        user.setRoles(roles);
-
-        User savedUser = userRepo.save(user);
-
+        userService.registerUser(user);
         return ResponseEntity.ok(new ApiResponse(true, "Uspesno ste kreirali nalog!"));
     }
 

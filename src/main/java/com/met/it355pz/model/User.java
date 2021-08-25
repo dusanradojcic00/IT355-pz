@@ -43,7 +43,7 @@ public class User {
 
     private String phone;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Role> roles;
 
     @OneToMany

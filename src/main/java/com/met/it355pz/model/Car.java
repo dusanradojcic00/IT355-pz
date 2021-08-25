@@ -18,6 +18,7 @@ public class Car {
     private String plates;
     private String model;
     private String maker;
+    private String image;
     private int hp;
     private int gears;
     private int seats;

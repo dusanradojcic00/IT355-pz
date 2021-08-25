@@ -13,4 +13,8 @@ public interface UserService {
     public User getUserById(long id, UserPrincipal currentUser);
 
     void deleteUser(User user);
+
+    public User registerUser(User user);
+
+    void updateUser(User user, UserPrincipal currentUser);
 }
