@@ -1,7 +1,6 @@
 package com.met.it355pz.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 
@@ -21,6 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "createdAt", "updatedAt"})
 @EntityListeners(AuditingEntityListener.class)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,5 +76,14 @@ public class User {
 
     public void removeRole(Role role) {
         this.roles.remove(role);
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+    }
+
+    @JsonIgnore
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 }

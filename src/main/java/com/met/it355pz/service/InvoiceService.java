@@ -5,7 +5,8 @@ import com.met.it355pz.model.Invoice;
 import java.util.List;
 
 public interface InvoiceService {
-    public List<Invoice> getAllInvoices();
+    public List<Invoice> getAllInvoices(int page, int size);
     public List<Invoice> getInvoicesByUser(long userId);
     public Invoice getInvoiceById(long invoiceId);
+    public long createInvoice(Invoice invoice);
 }

@@ -10,4 +10,8 @@ public interface ReservationService {
     public Reservation getReservationById(long id);
 
     public long saveReservation(Reservation reservation);
+
+    public void deleteReservation(long id);
+
+    public Reservation updateReservation(Reservation reservation);
 }

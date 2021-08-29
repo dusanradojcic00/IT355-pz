@@ -2,8 +2,6 @@
 
 ## Tema: **Rent-a-car**
 
-## Opis sistema
-
 Sistem će biti kreiran u vidu RESTfull veb servisa. Konzument REST API-ja će biti aplikacija napisana za Android OS, za
 potrebe projekta iz predmeta CS330.
 

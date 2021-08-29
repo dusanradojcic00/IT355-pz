@@ -6,15 +6,12 @@ import com.met.it355pz.model.UserPrincipal;
 import com.met.it355pz.payload.auth.AuthRequest;
 import com.met.it355pz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/users")

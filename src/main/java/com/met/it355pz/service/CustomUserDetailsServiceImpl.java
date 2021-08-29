@@ -1,4 +1,4 @@
-package com.met.it355pz.service.impl;
+package com.met.it355pz.service;
 
 import com.met.it355pz.model.User;
 import com.met.it355pz.model.UserPrincipal;
