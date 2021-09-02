@@ -31,8 +31,13 @@ public class Reservation {
     @ManyToOne
     private User user;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "reservation")
+    private Invoice invoice;
 
     public User getUser() {
         return user;
     }
+
+
 }

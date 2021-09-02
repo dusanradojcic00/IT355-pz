@@ -51,6 +51,7 @@ public class User {
     private List<Reservation> reservations;
 
     @CreatedDate
+    @Column(updatable = false, nullable = false)
     private Instant createdAt;
 
     @LastModifiedDate

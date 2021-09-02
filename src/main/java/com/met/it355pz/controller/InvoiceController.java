@@ -1,6 +1,8 @@
 package com.met.it355pz.controller;
 
+import com.met.it355pz.config.CurrentUser;
 import com.met.it355pz.model.Invoice;
+import com.met.it355pz.model.UserPrincipal;
 import com.met.it355pz.service.InvoiceService;
 import com.met.it355pz.util.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,36 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getAllInvoices(@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                            @RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return ResponseEntity.ok(invoiceService.getAllInvoices(page, size));
+                                            @RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                                            @RequestParam(name = "user", required = false) Long userId,
+                                            @CurrentUser UserPrincipal currentUser) {
+        if (userId == null) {
+            return ResponseEntity.ok(invoiceService.getAllInvoices(page, size, currentUser));
+        } else {
+            return ResponseEntity.ok(invoiceService.getInvoicesByUser(userId, currentUser));
+        }
+
     }
+
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> createInvoice(@RequestBody Invoice invoice) {
         return ResponseEntity.ok(invoiceService.createInvoice(invoice));
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteInvoice(@RequestBody Invoice invoice) {
+        invoiceService.deleteInvoice(invoice);
+        return ResponseEntity.ok("Succesfully deleted invoice with ID: " + invoice.getId());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getinvoiceById(@PathVariable Long id,
+                                            @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(invoiceService.getInvoiceById(id, currentUser));
     }
 }

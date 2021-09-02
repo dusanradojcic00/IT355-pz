@@ -65,4 +65,9 @@ public class UserController {
         userService.updateUser(user, userPrincipal);
         return ResponseEntity.ok("User with username " + user.getUsername() + " successfully updated");
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getProfile(@CurrentUser UserPrincipal userPrincipal) {
+        return ResponseEntity.ok("NOT YET IMPLEMETNED");
+    }
 }
