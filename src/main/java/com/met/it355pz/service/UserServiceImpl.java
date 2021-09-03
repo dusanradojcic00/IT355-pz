@@ -3,13 +3,17 @@ package com.met.it355pz.service;
 import com.met.it355pz.exception.InputValidationException;
 import com.met.it355pz.exception.NoPermissionsException;
 import com.met.it355pz.exception.NoSuchElementFoundException;
+import com.met.it355pz.mapper.UserMapper;
 import com.met.it355pz.model.Role;
 import com.met.it355pz.model.RoleType;
 import com.met.it355pz.model.User;
 import com.met.it355pz.model.UserPrincipal;
+import com.met.it355pz.payload.dto.ProfileDTO;
+import com.met.it355pz.payload.dto.UserDTO;
 import com.met.it355pz.repo.RoleRepo;
 import com.met.it355pz.repo.UserRepo;
 import com.met.it355pz.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 
@@ -31,6 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepo roleRepo;
+
+    private final UserMapper userMapper;
 
     @Override
     public boolean giveAdmin(String username) {
@@ -61,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public long saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        
+
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepo.findByName(RoleType.ROLE_USER));
         user.setRoles(roles);
@@ -70,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User user) {
+    public ProfileDTO registerUser(User user) {
         List<Role> roles = new ArrayList<>();
 
         roles.add(roleRepo.findByName(RoleType.ROLE_USER));
@@ -88,7 +95,7 @@ public class UserServiceImpl implements UserService {
             throw new InputValidationException("Field username must be formated as email: " + user.getUsername());
         }
 
-        return user;
+        return userMapper.toProfileDto(user);
     }
 
     @Override
@@ -98,11 +105,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(long id, UserPrincipal currentUser) {
+    public UserDTO getUserByUsername(String username) {
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new NoSuchElementFoundException(username));
+        return userMapper.toUserDto(user);
+
+    }
+
+    @Override
+    public ProfileDTO getUserById(long id, UserPrincipal currentUser) {
         User user = userRepo.findById(id).orElseThrow(() -> new NoSuchElementFoundException(id));
 
         if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name())) || user.getId().equals(currentUser.getId())) {
-            return userRepo.getById(id);
+            return userMapper.toProfileDto(userRepo.getById(id));
         } else {
             throw new NoPermissionsException("You don't have permission to access this entity!");
         }

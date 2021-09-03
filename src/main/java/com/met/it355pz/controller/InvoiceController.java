@@ -34,9 +34,7 @@ public class InvoiceController {
         } else {
             return ResponseEntity.ok(invoiceService.getInvoicesByUser(userId, currentUser));
         }
-
     }
-
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

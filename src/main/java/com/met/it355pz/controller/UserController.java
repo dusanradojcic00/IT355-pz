@@ -4,6 +4,8 @@ import com.met.it355pz.config.CurrentUser;
 import com.met.it355pz.model.User;
 import com.met.it355pz.model.UserPrincipal;
 import com.met.it355pz.payload.auth.AuthRequest;
+import com.met.it355pz.payload.dto.ProfileDTO;
+import com.met.it355pz.payload.dto.UserDTO;
 import com.met.it355pz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,7 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getUserById(@PathVariable("id") long id, @CurrentUser UserPrincipal userPrincipal) {
-        User user = userService.getUserById(id, userPrincipal);
+        ProfileDTO user = userService.getUserById(id, userPrincipal);
         return ResponseEntity.ok(user);
     }
 

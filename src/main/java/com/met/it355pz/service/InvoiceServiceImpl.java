@@ -51,8 +51,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoices.forEach(invoice -> {
             invoiceDTOList.add(invoiceMapper.toInvoiceDto(invoice));
         });
-
-
         return invoiceDTOList;
 
     }

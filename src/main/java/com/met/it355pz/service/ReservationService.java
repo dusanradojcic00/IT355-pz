@@ -2,6 +2,7 @@ package com.met.it355pz.service;
 
 import com.met.it355pz.model.Reservation;
 import com.met.it355pz.model.User;
+import com.met.it355pz.payload.dto.ReservationDTO;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ReservationService {
 
     public List<Reservation> getAllReservationsByUser(User user);
 
-    public Reservation getReservationById(long id);
+    public ReservationDTO getReservationById(long id);
 
     public long saveReservation(Reservation reservation);
 
