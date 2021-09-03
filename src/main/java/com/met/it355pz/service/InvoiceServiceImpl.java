@@ -1,11 +1,14 @@
 package com.met.it355pz.service;
 
 import com.met.it355pz.exception.NoPermissionsException;
+import com.met.it355pz.mapper.InvoiceMapper;
 import com.met.it355pz.model.*;
+import com.met.it355pz.payload.dto.InvoiceDTO;
 import com.met.it355pz.repo.InvoiceRepo;
 import com.met.it355pz.repo.UserRepo;
 
 import com.met.it355pz.util.AppUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
@@ -31,21 +35,30 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     ReservationService reservationService;
 
+    private final InvoiceMapper invoiceMapper;
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Override
-    public List<Invoice> getAllInvoices(int page, int size, UserPrincipal currentUser) {
+    public List<InvoiceDTO> getAllInvoices(int page, int size, UserPrincipal currentUser) {
         AppUtils.validatePageNumberAndSize(page, size);
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "issued");
 
         Page<Invoice> invoices = invoiceRepo.findAll(pageable);
 
-        return invoices.toList();
+        List<InvoiceDTO> invoiceDTOList = new ArrayList<>();
+
+        invoices.forEach(invoice -> {
+            invoiceDTOList.add(invoiceMapper.toInvoiceDto(invoice));
+        });
+
+
+        return invoiceDTOList;
 
     }
 
     @Override
-    public List<Invoice> getInvoicesByUser(long userId, UserPrincipal currentUser) {
+    public List<InvoiceDTO> getInvoicesByUser(long userId, UserPrincipal currentUser) {
 
         User user = userRepo.getById(userId);
 
@@ -55,12 +68,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
         List<Reservation> reservations = reservationService.getAllReservationsByUser(user);
-        List<Invoice> invoiceList = new ArrayList<>();
+        List<InvoiceDTO> invoiceList = new ArrayList<>();
 
         reservations.forEach(reservation -> {
             System.out.println("Reservation: " + reservation.getId());
             Invoice invoice = invoiceRepo.findInvoiceByReservation(reservation);
-            invoiceList.add(invoice);
+            invoiceList.add(invoiceMapper.toInvoiceDto(invoice));
         });
 
 
@@ -70,14 +83,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     /**
      * @param invoiceId
      * @param currentUser
-     * @return Invoice
+     * @return InvoiceDTO
      * @throws NoPermissionsException if user is not an Admin and requests invoice which he is not owner of
      */
     @Override
-    public Invoice getInvoiceById(long invoiceId, UserPrincipal currentUser) {
+    public InvoiceDTO getInvoiceById(long invoiceId, UserPrincipal currentUser) {
         Invoice invoice = invoiceRepo.getById(invoiceId);
         if (userHasPermission(invoice.getReservation().getUser().getId(), currentUser)) {
-            return invoice;
+            return invoiceMapper.toInvoiceDto(invoice);
         } else {
             throw new NoPermissionsException("You don't have permission");
         }

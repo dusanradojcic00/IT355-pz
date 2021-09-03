@@ -1,10 +1,14 @@
 package com.met.it355pz.controller;
 
 import com.met.it355pz.config.CurrentUser;
+import com.met.it355pz.mapper.InvoiceMapper;
 import com.met.it355pz.model.Invoice;
 import com.met.it355pz.model.UserPrincipal;
+import com.met.it355pz.payload.dto.InvoiceDTO;
 import com.met.it355pz.service.InvoiceService;
 import com.met.it355pz.util.AppConstants;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/invoices")
+
 public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
+
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
@@ -48,6 +54,7 @@ public class InvoiceController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getinvoiceById(@PathVariable Long id,
                                             @CurrentUser UserPrincipal currentUser) {
+
         return ResponseEntity.ok(invoiceService.getInvoiceById(id, currentUser));
     }
 }
