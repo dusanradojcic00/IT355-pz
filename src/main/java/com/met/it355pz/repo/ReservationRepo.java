@@ -1,5 +1,6 @@
 package com.met.it355pz.repo;
 
+import com.met.it355pz.model.Car;
 import com.met.it355pz.model.Reservation;
 import com.met.it355pz.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
     public List<Reservation> getReservationsByUser(User user);
+
+    public List<Reservation> findAllByCar(Car car);
 }

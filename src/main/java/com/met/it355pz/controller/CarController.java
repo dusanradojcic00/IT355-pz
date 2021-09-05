@@ -54,5 +54,13 @@ public class CarController {
         return ResponseEntity.ok("Car with ID: " + car.getId() + " successfully updated");
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<?> availableCars(@RequestParam("start") String startDate,
+                                           @RequestParam("end") String endDate) {
+
+
+        return ResponseEntity.ok(carService.availableCars(startDate, endDate));
+    }
+
 
 }

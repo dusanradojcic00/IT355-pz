@@ -13,5 +13,8 @@ public interface CarService {
 
     public long saveCar(Car car);
 
+
     public Car updateCar(Car car);
+
+    public List<Car> availableCars(String startDate, String endDate);
 }

@@ -22,6 +22,5 @@ public class LoggingInterceptor {
         String method = jp.getSignature().getName();
         AuthRequest auth = (AuthRequest) jp.getArgs()[0];
         log.info(String.format("User tried to %s with credentials (username: %s, password: %s) ", method, auth.getUsername(), auth.getPassword()));
-
     }
 }
