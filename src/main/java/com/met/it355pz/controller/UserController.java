@@ -70,6 +70,6 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getProfile(@CurrentUser UserPrincipal userPrincipal) {
-        return ResponseEntity.ok("NOT YET IMPLEMETNED");
+        return ResponseEntity.ok(userService.getUserProfile(userPrincipal));
     }
 }

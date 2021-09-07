@@ -101,7 +101,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user, UserPrincipal currentUser) {
         User newUser = userRepo.findByUsername(user.getUsername()).orElseThrow(() -> new NoSuchElementFoundException(user.getUsername()));
-
+        if (user.getFirstName() != null)
+            newUser.setFirstName(user.getFirstName());
+        if (user.getLastName() != null)
+            newUser.setLastName(user.getLastName());
+        if (user.getPhone() != null)
+            newUser.setPhone(user.getPhone());
+        if (user.getAddress() != null)
+            if (user.getAddress().isValid())
+                newUser.setAddress(user.getAddress());
+        userRepo.save(newUser);
     }
 
     @Override
@@ -128,5 +137,11 @@ public class UserServiceImpl implements UserService {
         userRepo.delete(user);
     }
 
+
+    @Override
+    public ProfileDTO getUserProfile(UserPrincipal userPrincipal) {
+        User user = userRepo.findByUsername(userPrincipal.getUsername()).orElseThrow(() -> new NoSuchElementFoundException(userPrincipal.getUsername()));
+        return userMapper.toProfileDto(user);
+    }
 
 }

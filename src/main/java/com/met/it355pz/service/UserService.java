@@ -14,11 +14,13 @@ public interface UserService {
 
     public ProfileDTO getUserById(long id, UserPrincipal currentUser);
 
-    void deleteUser(User user);
+    public void deleteUser(User user);
 
     public ProfileDTO registerUser(User user);
 
-    void updateUser(User user, UserPrincipal currentUser);
+    public void updateUser(User user, UserPrincipal currentUser);
 
     public UserDTO getUserByUsername(String username);
+
+    public ProfileDTO getUserProfile(UserPrincipal userPrincipal);
 }
