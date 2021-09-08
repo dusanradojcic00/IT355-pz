@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,9 +22,9 @@ public class Reservation {
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date startingDate;
+    private LocalDate startingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date endingDate;
+    private LocalDate endingDate;
 
     @ManyToOne
     private Car car;
@@ -39,5 +40,10 @@ public class Reservation {
         return user;
     }
 
-
+    public Reservation(Long id, LocalDate startingDate, LocalDate endingDate, Car car) {
+        this.id = id;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+        this.car = car;
+    }
 }

@@ -47,7 +47,6 @@ public class JwtTokenUtil implements Serializable {
         return claims.getExpiration();
     }
 
-
     public boolean validateToken(String jwtToken) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(SECRET_KEY));

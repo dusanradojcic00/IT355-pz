@@ -30,6 +30,7 @@ dependencies {
     //Test implementation
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.mockito:mockito-core:3.+"
 
     //Lombok
     compileOnly 'org.projectlombok:lombok:1.18.20'

@@ -64,7 +64,6 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new NoPermissionsException("You don't have permission for this entity");
         }
 
-
         List<Reservation> reservations = reservationService.getAllReservationsByUser(user);
         List<InvoiceDTO> invoiceList = new ArrayList<>();
 
@@ -73,7 +72,6 @@ public class InvoiceServiceImpl implements InvoiceService {
             Invoice invoice = invoiceRepo.findInvoiceByReservation(reservation);
             invoiceList.add(invoiceMapper.toInvoiceDto(invoice));
         });
-
 
         return invoiceList;
     }

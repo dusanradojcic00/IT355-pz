@@ -57,8 +57,6 @@ public class CarController {
     @GetMapping("/available")
     public ResponseEntity<?> availableCars(@RequestParam("start") String startDate,
                                            @RequestParam("end") String endDate) {
-
-
         return ResponseEntity.ok(carService.availableCars(startDate, endDate));
     }
 
